@@ -39,6 +39,10 @@ public class RemoteSSHConnection {
      * Default constructor.
      */
     public RemoteSSHConnection(String user, String password, String remoteHost, String pemFile) throws Exception {
+        this(user, password, remoteHost, null, pemFile);
+    }
+
+    public RemoteSSHConnection(String user, String password, String remoteHost, String remotePort, String pemFile) throws Exception {
         // Create session
         JSch jsch = new JSch();
 
@@ -47,7 +51,13 @@ public class RemoteSSHConnection {
             jsch.addIdentity(pemFile);
         }
 
-        Session session = jsch.getSession(user, remoteHost, 22);
+        int sshPort = 22;
+        if (remotePort != null) {
+            // Set remote port if provided
+            sshPort = Integer.parseInt(remotePort);
+        }
+
+        Session session = jsch.getSession(user, remoteHost, sshPort);
 
         // Pass user
         UserInfo ui = new MyUserInfo();

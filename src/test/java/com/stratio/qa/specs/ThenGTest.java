@@ -238,7 +238,7 @@ public class ThenGTest {
         theng.matchWithExpresion(envVar, table);
     }
 
-    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "^Not a valid comparison. Valid ones are: is \\| matches \\| is higher than \\| is lower than \\| contains \\| is different from$")
+    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "^Not a valid comparison. Valid ones are: is \\| matches \\| is higher than \\| is lower than \\| contains \\| does not contain \\| is different from$")
     public void testCheckValueInvalidComparison() throws Exception {
         ThreadProperty.set("class", this.getClass().getCanonicalName());
         CommonG commong = new CommonG();

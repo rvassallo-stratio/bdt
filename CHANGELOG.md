@@ -10,6 +10,7 @@ Only listing significant user-visible, not internal code cleanups and minor bug 
 * [QA-152] New aspect merging 'include' and 'loop'. Old aspects removed.
 * [QATM-74] New step to store text in a webElement in environment variable.
 * [QATM-73] New step to read file, modify according to parameters and store in environment variable.
+* [AR-732] Add Command Center - Configuration API Glue
 
 ## 0.5.1 (July 05, 2017)
 

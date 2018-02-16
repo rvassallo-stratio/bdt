@@ -92,6 +92,7 @@ public class CucumberRunner {
         uniqueGlue.add("classpath:com/stratio/sparta/testsAT/specs");
         uniqueGlue.add("classpath:com/stratio/gosecsso/testsAT/specs");
         uniqueGlue.add("classpath:com/stratio/dcos/crossdata/testsAT/specs");
+        uniqueGlue.add("classpath:com/stratio/cct/configuration/api/specs");
         uniqueGlue.add("classpath:com/stratio/crossdata/testsAT/specs");
         uniqueGlue.add("classpath:com/stratio/streaming/testsAT/specs");
         uniqueGlue.add("classpath:com/stratio/ingestion/testsAT/specs");
@@ -109,13 +110,16 @@ public class CucumberRunner {
         uniqueGlue.add("classpath:com/stratio/intelligence/testsAT/specs");
         uniqueGlue.add("classpath:com/stratio/postgresbd/testsAT/specs");
         uniqueGlue.add("classpath:com/stratio/universe/testsAT/specs");
-        uniqueGlue.add("classpath:com/stratio/paas/confluentkafkaAT/specs");
-        uniqueGlue.add("classpath:com/stratio/paas/dcoselasticserviceAT/specs");
-        uniqueGlue.add("classpath:com/stratio/paas/cassandraframeworkAT/specs");
-        uniqueGlue.add("classpath:com/stratio/paas/hdfsframeworkAT/specs");
         uniqueGlue.add("classpath:com/stratio/paas/dgDatadictionaryAT/specs");
         uniqueGlue.add("classpath:com/stratio/paas/kafkaschemaregistryAT/specs");
         uniqueGlue.add("classpath:com/stratio/postgresql/testsAT/specs");
+        uniqueGlue.add("classpath:com/stratio/paas/dgtests/specs");
+        uniqueGlue.add("classpath:com/stratio/elastic/specs");
+        uniqueGlue.add("classpath:com/stratio/kafka/specs");
+        uniqueGlue.add("classpath:com/stratio/hdfs/specs");
+        uniqueGlue.add("classpath:com/stratio/cassandra/specs");
+        uniqueGlue.add("classpath:com/stratio/schema_registry/specs");
+        uniqueGlue.add("classpath:com/stratio/paas/sparkAT/specs");
 
         runtimeOptions.getGlue().clear();
         runtimeOptions.getGlue().addAll(uniqueGlue);

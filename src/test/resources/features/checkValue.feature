@@ -39,6 +39,10 @@ Feature: Simple check values test
     Then I run 'echo "Con ta ins"' in the ssh connection and save the value in environment variable 'EVAR'
     And '!{EVAR}' contains 'a in'
 
+  Scenario: does not contain
+    When I run 'echo "Does not contain"' in the ssh connection and save the value in environment variable 'EVAR'
+    Then '!{EVAR}' does not contain 'doesnotcontain'
+
   Scenario: is different from
     When I run 'echo "Different"' in the ssh connection and save the value in environment variable 'EVAR'
     Then '!{EVAR}' is different from 'Not Different'
