@@ -504,10 +504,12 @@ public class CommonG {
         File temp = null;
         try {
             oldTrailingImage = ImageIO.read(trailingImage);
-            BufferedImage newTrailingImage = new BufferedImage(
-                    oldTrailingImage.getWidth(), oldTrailingImage.getHeight()
-                    - newTrailingImageHeight,
-                    BufferedImage.TYPE_INT_RGB);
+            BufferedImage newTrailingImage;
+            if ((oldTrailingImage.getHeight() == newTrailingImageHeight)) {
+                newTrailingImage = oldTrailingImage;
+            } else {
+                newTrailingImage = new BufferedImage(oldTrailingImage.getWidth(), oldTrailingImage.getHeight() - newTrailingImageHeight, BufferedImage.TYPE_INT_RGB);
+            }
 
             newTrailingImage.createGraphics().drawImage(oldTrailingImage, 0,
                     0 - newTrailingImageHeight, null);
