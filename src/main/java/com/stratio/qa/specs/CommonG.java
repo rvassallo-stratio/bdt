@@ -53,7 +53,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -78,11 +77,15 @@ public class CommonG {
 
     private RemoteWebDriver driver = null;
 
+    private WebDriverException webDriverException = null;
+
     private String browserName = null;
 
     private PreviousWebElements previousWebElements = null;
 
     private String parentWindow = "";
+
+    private OutputType outputType = null;
 
     private AsyncHttpClient client;
 
@@ -219,6 +222,14 @@ public class CommonG {
     public String getWebPort() {
         return this.webPort;
     }
+
+    /**
+      * Capture a snapshot or an evidence in the driver
+      *
+      * @param driver driver used for testing
+      * @return String
+      */
+    public String getHtmlCode(WebDriver driver) { return driver.getPageSource(); }
 
     /**
      * Set the WEB port.
