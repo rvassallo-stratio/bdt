@@ -215,13 +215,13 @@ public class HookGSpec extends BaseGSpec {
                 byte[] screenshot = (commonspec.getDriver().getScreenshotAs(OutputType.BYTES));
                 scenario.embed(screenshot, "image/png");
             } catch (WebDriverException somePlatformsDontSupportScreenshots) {
-                fail("Screenshot failed "+somePlatformsDontSupportScreenshots);
+                fail("Screenshot failed " + somePlatformsDontSupportScreenshots);
             }
             try {
                 String htmlCode = commonspec.getHtmlCode(commonspec.getDriver());
                 FileUtils.write(new File("htmlSource"), htmlCode);
             } catch (WebDriverException somePlatformsDontSupportScreenshots) {
-                fail("Screenshot failed "+somePlatformsDontSupportScreenshots);
+                fail("Screenshot failed " + somePlatformsDontSupportScreenshots);
             } catch (IOException e) {
                 e.printStackTrace();
             }

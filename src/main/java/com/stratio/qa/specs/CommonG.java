@@ -85,8 +85,6 @@ public class CommonG {
 
     private String parentWindow = "";
 
-    private OutputType outputType = null;
-
     private AsyncHttpClient client;
 
     private HttpResponse response;
@@ -229,7 +227,9 @@ public class CommonG {
       * @param driver driver used for testing
       * @return String
       */
-    public String getHtmlCode(WebDriver driver) { return driver.getPageSource(); }
+    public String getHtmlCode(WebDriver driver) {
+        return driver.getPageSource();
+    }
 
     /**
      * Set the WEB port.
