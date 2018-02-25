@@ -207,7 +207,7 @@ public class HookGSpec extends BaseGSpec {
     /**
      * Close logger.
      */
-    @After(order = 0)
+    @After(order = 0, value = {"@mobile,@web"})
     public void teardown(Scenario scenario) {
         if (scenario.isFailed()) {
             try {
@@ -223,7 +223,7 @@ public class HookGSpec extends BaseGSpec {
             } catch (WebDriverException somePlatformsDontSupportScreenshots) {
                 fail("Screenshot failed " + somePlatformsDontSupportScreenshots);
             } catch (IOException e) {
-                e.printStackTrace();
+                fail("failed to save html source to file");
             }
         }
     }
