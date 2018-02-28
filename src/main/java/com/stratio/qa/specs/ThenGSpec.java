@@ -355,11 +355,11 @@ public class ThenGSpec extends BaseGSpec {
      * @param search
      * @throws InterruptedException
      */
-    @Then("^in less than '(\\d+?)' seconds, checking each '(\\d+?)' seconds, the command output '(.+?)' contains '(.+?)'$")
-    public void assertCommandExistsOnTimeOut(Integer timeout, Integer wait, String command, String search) throws Exception {
+    @Then("^in less than '(\\d+?)' seconds, checking each '(\\d+?)' seconds, the command output '(.+?)' contains '(.+?)'( with exit status '(.+?)')?$")
+    public void assertCommandExistsOnTimeOut(Integer timeout, Integer wait, String command, String search, String foo, Integer exitStatus) throws Exception {
         Boolean found = false;
         AssertionError ex = null;
-
+        command = "set -o pipefail && alias grep='grep --color=never' && " + command;
         for (int i = 0; (i <= timeout); i += wait) {
             if (found) {
                 break;
@@ -368,6 +368,9 @@ public class ThenGSpec extends BaseGSpec {
             commonspec.getRemoteSSHConnection().runCommand(command);
             commonspec.setCommandResult(commonspec.getRemoteSSHConnection().getResult());
             try {
+                if (exitStatus != null) {
+                    assertThat(commonspec.getRemoteSSHConnection().getExitStatus()).isEqualTo(exitStatus);
+                }
                 assertThat(commonspec.getCommandResult()).as("Contains " + search + ".").contains(search);
                 found = true;
                 timeout = i;
