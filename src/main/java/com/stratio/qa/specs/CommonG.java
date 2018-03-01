@@ -825,8 +825,49 @@ public class CommonG {
                             newKey = composeKey;
                             newComposeKey = "$";
                         }
-                        jsonAsMap = JsonPath.parse(modifiedData).put(newComposeKey, newKey, newValue).json();
-                        break;
+
+                        if ("array".equals(typeJsonObject)) {
+                            jArray = new JSONArray();
+                            if (!"[]".equals(newValue)) {
+                                jArray = new JSONArray(newValue);
+                            }
+                            jsonAsMap = JsonPath.parse(modifiedData).put(newComposeKey, newKey, jArray).json();
+                            break;
+                        } else if ("object".equals(typeJsonObject)) {
+                            jObject = new JSONObject();
+                            if (!"{}".equals(newValue)) {
+                                jObject = new JSONObject(newValue);
+                            }
+                            jsonAsMap = JsonPath.parse(modifiedData).put(newComposeKey, newKey, jObject).json();
+                            break;
+                        } else if ("string".equals(typeJsonObject)) {
+                            jsonAsMap = JsonPath.parse(modifiedData).put(newComposeKey, newKey, newValue).json();
+                            break;
+
+                        } else if ("number".equals(typeJsonObject)) {
+                            jNumber = new Double(newValue);
+                            jsonAsMap = JsonPath.parse(modifiedData).put(newComposeKey, newKey, jNumber).json();
+                            break;
+
+                        } else if ("boolean".equals(typeJsonObject)) {
+                            jBoolean = new Boolean(newValue);
+                            jsonAsMap = JsonPath.parse(modifiedData).put(newComposeKey, newKey, jBoolean).json();
+                            break;
+
+                        } else if ("null".equals(typeJsonObject)) {
+                            nullValue = JsonPath.parse(modifiedData).put(newComposeKey, newKey, null).jsonString();
+                            break;
+
+                        } else {
+                            String replaceValue = JsonPath.parse(modifiedData).read(composeKey);
+                            String toBeReplaced = newValue.split("->")[0];
+                            String replacement = newValue.split("->")[1];
+                            newValue = replaceValue.replace(toBeReplaced, replacement);
+                            jsonAsMap = JsonPath.parse(modifiedData).put(newComposeKey, newKey, newValue).json();
+                            break;
+                        }
+//                        jsonAsMap = JsonPath.parse(modifiedData).put(newComposeKey, newKey, newValue).json();
+//                        break;
                     case "UPDATE":
                         jsonAsMap = JsonPath.parse(modifiedData).set(composeKey, newValue).json();
                         break;

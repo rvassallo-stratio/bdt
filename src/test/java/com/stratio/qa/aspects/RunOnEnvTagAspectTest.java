@@ -65,6 +65,23 @@ public class RunOnEnvTagAspectTest {
     }
 
     @Test
+    public void testTagIterationRunArray() throws Exception {
+        System.setProperty("HELLO","OK");
+        System.setProperty("BYE","KO");
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag("@runOnEnv(HELLO,BYE)", 1));
+        assertThat(false).isEqualTo(runontag.tagsIteration(tagList,1));
+    }
+
+    @Test
+    public void testTagIterationRunArrayNegative() throws Exception {
+        System.setProperty("HELLO","OK");
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag("@runOnEnv(HELLO,BYE)", 1));
+        assertThat(false).isEqualTo(runontag.tagsIteration(tagList,1));
+    }
+
+    @Test
     public void testTagIterationIgnoreRun() throws Exception {
         List<Tag> tagList = new ArrayList<>();
         tagList.add(new Tag("@runOnEnv(BYE)", 1));
@@ -79,10 +96,190 @@ public class RunOnEnvTagAspectTest {
     }
 
     @Test
+    public void testTagIterationSkipArray() throws Exception {
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag("@skipOnEnv(HELLO_NO,BYE_NO)", 1));
+        assertThat(false).isEqualTo(runontag.tagsIteration(tagList,1));
+    }
+
+    @Test
     public void testTagIterationIgnoreSkip() throws Exception {
         System.setProperty("HELLO","OK");
         List<Tag> tagList = new ArrayList<>();
         tagList.add(new Tag("@skipOnEnv(HELLO)", 1));
         assertThat(true).isEqualTo(runontag.tagsIteration(tagList,1));
     }
+
+    @Test
+    public void testTagIterationIgnoreSkipArray() throws Exception {
+        System.setProperty("HELLO","OK");
+        System.setProperty("BYE","KO");
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag("@skipOnEnv(HELLO,BYE)", 1));
+        assertThat(true).isEqualTo(runontag.tagsIteration(tagList,1));
+    }
+
+    @Test
+    public void testTagIterationIgnoreSkipArrayNegative() throws Exception {
+        System.setProperty("HELLO","OK");
+        System.setProperty("BYE","KO");
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag("@skipOnEnv(HELLO,SEEYOU)", 1));
+        assertThat(false).isEqualTo(runontag.tagsIteration(tagList,1));
+    }
+
+    @Test
+    public void testTagIterationRunValue() throws Exception {
+        System.setProperty("HELLO","OK");
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag("@runOnEnv(HELLO=OK)", 1));
+        assertThat(false).isEqualTo(runontag.tagsIteration(tagList,1));
+    }
+
+    @Test
+    public void testTagIterationRunValueNotDefined() throws Exception {
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag("@runOnEnv(HELLO=OK)", 1));
+        assertThat(false).isEqualTo(runontag.tagsIteration(tagList,1));
+    }
+
+    @Test
+    public void testTagIterationRunValueNegative() throws Exception {
+        System.setProperty("HELLO","OK");
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag("@runOnEnv(HELLO=KO)", 1));
+        assertThat(true).isEqualTo(runontag.tagsIteration(tagList,1));
+    }
+
+    @Test
+    public void testTagIterationRunValueArray() throws Exception {
+        System.setProperty("HELLO","OK");
+        System.setProperty("BYE","KO");
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag("@runOnEnv(HELLO=OK,BYE=KO)", 1));
+        assertThat(false).isEqualTo(runontag.tagsIteration(tagList,1));
+    }
+
+    @Test
+    public void testTagIterationRunValueArrayNegative() throws Exception {
+        System.setProperty("HELLO","OK");
+        System.setProperty("BYE","KO");
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag("@runOnEnv(HELLO=OK,BYE=OK)", 1));
+        assertThat(true).isEqualTo(runontag.tagsIteration(tagList,1));
+    }
+
+    @Test
+    public void testTagIterationRunValueArrayMix() throws Exception {
+        System.setProperty("HELLO","OK");
+        System.setProperty("BYE","KO");
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag("@runOnEnv(HELLO=OK,BYE)", 1));
+        assertThat(false).isEqualTo(runontag.tagsIteration(tagList,1));
+    }
+
+    @Test
+    public void testTagIterationRunValueArrayMix2() throws Exception {
+        System.setProperty("HELLO","OK");
+        System.setProperty("BYE","KO");
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag("@runOnEnv(BYE,HELLO=OK)", 1));
+        assertThat(false).isEqualTo(runontag.tagsIteration(tagList,1));
+    }
+
+    @Test
+    public void testTagIterationRunValueArrayMixNegative() throws Exception {
+        System.setProperty("HELLO","OK");
+        System.setProperty("BYE","KO");
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag("@runOnEnv(HELLO=OK,SEEYOU)", 1));
+        assertThat(true).isEqualTo(runontag.tagsIteration(tagList,1));
+    }
+
+    @Test
+    public void testTagIterationRunValueArrayMixNegative2() throws Exception {
+        System.setProperty("HELLO","OK");
+        System.setProperty("BYE","KO");
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag("@runOnEnv(SEEYOU,HELLO=OK)", 1));
+        assertThat(true).isEqualTo(runontag.tagsIteration(tagList,1));
+    }
+
+    @Test
+    public void testTagIterationSkipValue() throws Exception {
+        System.setProperty("HELLO","OK");
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag("@skipOnEnv(HELLO=OK)", 1));
+        assertThat(true).isEqualTo(runontag.tagsIteration(tagList,1));
+    }
+
+    @Test
+    public void testTagIterationSkipValueNotDefined() throws Exception {
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag("@skipOnEnv(HELLO=OK)", 1));
+        assertThat(true).isEqualTo(runontag.tagsIteration(tagList,1));
+    }
+
+    @Test
+    public void testTagIterationSkipValueNegative() throws Exception {
+        System.setProperty("HELLO","OK");
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag("@skipOnEnv(HELLO=KO)", 1));
+        assertThat(false).isEqualTo(runontag.tagsIteration(tagList,1));
+    }
+
+    @Test
+    public void testTagIterationSkipValueArray() throws Exception {
+        System.setProperty("HELLO","OK");
+        System.setProperty("BYE","KO");
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag("@skipOnEnv(HELLO=OK,BYE=KO)", 1));
+        assertThat(true).isEqualTo(runontag.tagsIteration(tagList,1));
+    }
+
+    @Test
+    public void testTagIterationSkipValueArrayNegative() throws Exception {
+        System.setProperty("HELLO","OK");
+        System.setProperty("BYE","KO");
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag("@skipOnEnv(HELLO=OK,BYE=OK)", 1));
+        assertThat(false).isEqualTo(runontag.tagsIteration(tagList,1));
+    }
+
+    @Test
+    public void testTagIterationSkipValueArrayMix() throws Exception {
+        System.setProperty("HELLO","OK");
+        System.setProperty("BYE","KO");
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag("@skipOnEnv(HELLO=OK,BYE)", 1));
+        assertThat(true).isEqualTo(runontag.tagsIteration(tagList,1));
+    }
+
+    @Test
+    public void testTagIterationSkipValueArrayMix2() throws Exception {
+        System.setProperty("HELLO","OK");
+        System.setProperty("BYE","KO");
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag("@skipOnEnv(BYE,HELLO=OK)", 1));
+        assertThat(true).isEqualTo(runontag.tagsIteration(tagList,1));
+    }
+
+    @Test
+    public void testTagIterationSkipValueArrayMixNegative() throws Exception {
+        System.setProperty("HELLO","OK");
+        System.setProperty("BYE","KO");
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag("@skipOnEnv(HELLO=OK,SEEYOU)", 1));
+        assertThat(false).isEqualTo(runontag.tagsIteration(tagList,1));
+    }
+
+    @Test
+    public void testTagIterationSkipValueArrayMixNegative2() throws Exception {
+        System.setProperty("HELLO","OK");
+        System.setProperty("BYE","KO");
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(new Tag("@skipOnEnv(SEEYOU,HELLO=OK)", 1));
+        assertThat(false).isEqualTo(runontag.tagsIteration(tagList,1));
+    }
+
 }

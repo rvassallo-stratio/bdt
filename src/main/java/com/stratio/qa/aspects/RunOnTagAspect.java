@@ -127,8 +127,21 @@ public class RunOnTagAspect {
             throw new Exception("Error while parsing params. Params must be at least one");
         }
         for (int i = 0; i < params.length; i++) {
-            if (System.getProperty(params[i], "").isEmpty()) {
-                return false;
+            if (params[i].contains("=")) {
+                String param = params[i].split("=")[0];
+                String value = params[i].split("=")[1];
+
+                if (System.getProperty(param, "").isEmpty()) {
+                    return false;
+                }
+
+                if (!System.getProperty(param).equals(value)) {
+                    return false;
+                }
+            } else {
+                if (System.getProperty(params[i], "").isEmpty()) {
+                    return false;
+                }
             }
         }
         return true;

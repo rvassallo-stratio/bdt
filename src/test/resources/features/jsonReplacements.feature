@@ -46,8 +46,8 @@ Feature: JSON replacements
     Given I run 'ls' locally
     Given I create file 'testSOATtag.json' based on 'schemas/simple1.json' as 'json' with:
       | $.a         | REPLACE | @{JSON.schemas/<file>.json}     | object   |
-      | b           | ADD     | ${WAIT}                         | N/A      |
-      | ${WAIT}     | ADD     | @{JSON.schemas/<file>.json}     | object   |
+      | $.b         | ADD     | ${WAIT}                         | number   |
+      | $.${WAIT}   | ADD     | @{JSON.schemas/<file>.json}     | object   |
     Given I save '@{JSON.testSOATtag.json}' in variable 'VAR'
     Then I run '[ "!{VAR}" = "<content>" ]' locally
 
