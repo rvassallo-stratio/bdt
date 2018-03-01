@@ -22,7 +22,7 @@ import org.testng.annotations.Test;
 import org.testng.annotations.Factory;
 import com.stratio.qa.data.BrowsersDataProvider;
 
-@CucumberOptions(format = "json:target/cucumber.json", features = {"src/test/resources/features/readWebElementTextToVariable.feature"})
+@CucumberOptions(format = "json:target/cucumber.json", features = {"src/test/resources/features/readWebElementTextToVariable.feature","src/test/resources/features/assertCommandExistsOnTimeOutIT.feature"})
 public class ThenGIT extends BaseTest {
 
     @Factory(enabled = false, dataProviderClass = BrowsersDataProvider.class, dataProvider = "availableUniqueBrowsers")

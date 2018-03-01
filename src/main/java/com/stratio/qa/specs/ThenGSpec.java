@@ -370,6 +370,8 @@ public class ThenGSpec extends BaseGSpec {
             try {
                 if (exitStatus != null) {
                     assertThat(commonspec.getRemoteSSHConnection().getExitStatus()).isEqualTo(exitStatus);
+                } else {
+                    assertThat(commonspec.getRemoteSSHConnection().getExitStatus()).isEqualTo(0);
                 }
                 assertThat(commonspec.getCommandResult()).as("Contains " + search + ".").contains(search);
                 found = true;
