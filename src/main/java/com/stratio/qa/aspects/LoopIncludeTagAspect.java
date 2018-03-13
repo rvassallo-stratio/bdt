@@ -185,7 +185,7 @@ public class LoopIncludeTagAspect {
             lines.add(num++, sbLine.toString());
             numLines++;
             idxs[idxs.length - 1] = idxs[idxs.length - 1] + 1;
-            idxs = fixMultiloopIndexes(idxs, keys, params);
+            idxs = fixMultiloopIndexes(idxs, keys, params); 
             continueMixing = idxs[0] < params.get(keys[0]).length;
         }
         return numLines;
