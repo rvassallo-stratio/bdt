@@ -31,7 +31,10 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Aspect
 public class LoopIncludeTagAspect {
@@ -59,8 +62,41 @@ public class LoopIncludeTagAspect {
 
 
         for (int s = 0; s < lines.size(); s++) {
-            String[] elems;
+            if (lines.get(s).toUpperCase().matches("\\s*@MULTILOOP.*")) {
+                Map<String, String[]> params = new HashMap<>();
+                String[] elements = lines.get(s).substring((lines.get(s).lastIndexOf("(") + 1), (lines.get(s).length()) - 1).split(",");
+                for (int t = 0; t < elements.length; t++) {
+                    String[] elementParts = elements[t].split("=>");
+                    String listParam = elementParts[0];
+                    String paramName = elementParts[1];
+                    String[] elems;
+                    try {
+                        elems = System.getProperty(listParam).split(",");
+                    } catch (Exception e) {
+                        logger.debug("-> {} is not defined. Exception captured till scenario execution.", listParam);
+                        elems = "error,error".split(",");
+                    }
+                    params.put(paramName, elems);
+                }
+
+                lines.set(s, " ");
+                while (!(lines.get(s).toUpperCase().contains("SCENARIO:"))) {
+                    s++;
+                }
+                lines.set(s, lines.get(s).replaceAll("Scenario", "Scenario Outline"));
+                s++;
+                while (s < lines.size()) {
+                    if ((lines.get(s).toUpperCase().contains("SCENARIO")) || lines.get(s).matches(".*@[^\\{].*")) {
+                        break;
+                    }
+                    s++;
+                }
+                lines.add(s, "Examples:");
+                int deltaLines = exampleMultiloopLines(params, lines,  s + 1);
+                s = s + deltaLines;
+            }
             if (lines.get(s).toUpperCase().matches("\\s*@LOOP.*")) {
+                String[] elems;
                 listParams = lines.get(s).substring((lines.get(s).lastIndexOf("(") + 1), (lines.get(s).length()) - 1).split(",")[0];
                 try {
                     elems = System.getProperty(listParams).split(",");
@@ -82,7 +118,7 @@ public class LoopIncludeTagAspect {
                     s++;
                 }
                 lines.add(s, "Examples:");
-                exampleLines(paramReplace, elems, lines,  s + 1);
+                exampleLoopLines(paramReplace, elems, lines,  s + 1);
                 s = s + elems.length;
             }
             if (lines.get(s).toUpperCase().matches("\\s*@BACKGROUND.*")) {
@@ -108,7 +144,7 @@ public class LoopIncludeTagAspect {
         return String.join("\n", lines);
     }
 
-    public void exampleLines (String name, String[] params, List<String> lines, int num) {
+    public void exampleLoopLines (String name, String[] params, List<String> lines, int num) {
         lines.add(num, "| " + name + " | " + name + ".id |");
         for (int i = 0; i < params.length; i++) {
             num++;
@@ -116,6 +152,56 @@ public class LoopIncludeTagAspect {
         }
     }
 
+    public int exampleMultiloopLines (Map<String, String[]> params, List<String> lines, int num) {
+        int numLines = 0;
+        String[] keys = params.keySet().toArray(new String[params.keySet().size()]);
+        StringBuilder sbHeader = new StringBuilder();
+        for (int i = 0; i < keys.length; i++) {
+            if (i == 0) {
+                sbHeader.append("|");
+            }
+            sbHeader.append(" ");
+            sbHeader.append(keys[i]);
+            sbHeader.append(" |");
+        }
+        lines.add(num++, sbHeader.toString());
+        numLines++;
+        boolean continueMixing = true;
+        int[] idxs = new int[keys.length];
+        Arrays.fill(idxs, 0);
+        while (continueMixing) {
+            StringBuilder sbLine = new StringBuilder();
+            for (int i = 0; i < keys.length; i++) {
+                String key = keys[i];
+                String[] values = params.get(key);
+                String value = values[idxs[i]];
+                if (i == 0) {
+                    sbLine.append("|");
+                }
+                sbLine.append(" ");
+                sbLine.append(value);
+                sbLine.append(" |");
+            }
+            lines.add(num++, sbLine.toString());
+            numLines++;
+            idxs[idxs.length - 1] = idxs[idxs.length - 1] + 1;
+            idxs = fixMultiloopIndexes(idxs, keys, params);
+            continueMixing = idxs[0] < params.get(keys[0]).length;
+        }
+        return numLines;
+    }
+
+    public int[] fixMultiloopIndexes(int[] idxs, String[] keys, Map<String, String[]> params) {
+        for (int i = idxs.length - 1; i >= 0; i--) {
+            if (idxs[i] >= params.get(keys[i]).length) {
+                if (i > 0) {
+                    idxs[i] = 0;
+                    idxs[i - 1] = idxs[i - 1] + 1;
+                }
+            }
+        }
+        return idxs;
+    }
 
     public String parseLines(List<String> lines, String path) throws IncludeException {
         String featureName;
