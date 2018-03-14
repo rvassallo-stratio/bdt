@@ -161,6 +161,8 @@ File will contain these 2 lines:
 2
 ```
 
+_Notice that this case `@multiloop(AGENT_LIST=>VAR_NAME)` is equivalent to `@loop(AGENT_LIST,VAR_NAME)`_
+
 ```
   @multiloop(SERVER_LIST=>SERVER_NAME,CLIENT_LIST=>CLIENT_NAME)
   Scenario: write <SERVER_NAME> and <CLIENT_NAME> into a file.
