@@ -4,7 +4,7 @@ Only listing significant user-visible, not internal code cleanups and minor bug 
 
 ## 0.7.0 (upcoming)
 
-* Pending changelog
+* [CROSSDATA-1550] Add @multiloop tag
 
 ## 0.6.0 (February 22, 2018)
 
