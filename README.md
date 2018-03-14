@@ -110,6 +110,7 @@ _Examples:_
 An AspectJ aspect that allows looping over scenarios. It provides two functionalities:
 
 ***@loop***
+
 Using this tag before an scenario will convert this scenario into an scenario outline, changing parameter defined "NAME" for every element in the environment variable list received.
 
 ` @loop(LIST_PARAM,NAME)`
@@ -138,6 +139,7 @@ _Examples:_
 More examples can be found in [Loop feature](src/test/resources/features/loopTag.feature)
 
 ***@multiloop***
+
 Using this tag before an scenario will convert this scenario into an scenario outline, changing parameter defined names for every element in the environment variable lists received. It creates every possibility between provided lists.
 
 ` @multiloop(LIST_PARAM1=>NAME1,LIST_PARAM2=>NAME2,LIST_PARAM3=>NAME3)`
@@ -152,8 +154,8 @@ _Examples:_
       Given I run 'echo <VAR_NAME> >> testOutput.txt' locally
 ```
 
-Where `-DAGENT_LIST=1,2`, will lead to an scenario outline with 2 different examples (one for each value in AGENT_LIST)
-File will contain this 2 lines:
+Given `-DAGENT_LIST=1,2`, it will lead to an scenario outline with 2 different examples (one for each value in AGENT_LIST)
+File will contain these 2 lines:
 ```
 1
 2
@@ -165,10 +167,9 @@ File will contain this 2 lines:
     Given I run 'echo "<SERVER_NAME>,<CLIENT_NAME>" >> testMultiloopOutput.txt' locally
 ```
 
-Where `-DSERVER_LIST=server1,server2 -DCLIENT_LIST=client1,client2,client3`, will lead to an scenario outline with 6 different examples (one for each possible tuple of values, mixing SERVER_LIST and CLIENT_LIST)
+Given `-DSERVER_LIST=server1,server2 -DCLIENT_LIST=client1,client2,client3`, it will lead to an scenario outline with 6 different examples (one for each possible tuple of values, mixing SERVER_LIST and CLIENT_LIST)
 
-More examples can be found in [Multiloop feature](src/test/resources/features/multiloopTag.feature)
-File will contain this 6 lines:
+File will contain these 6 lines:
 ```
 server1,client1
 server2,client1
@@ -177,6 +178,8 @@ server2,client2
 server1,client3
 server2,client3
 ```
+
+More examples can be found in [Multiloop feature](src/test/resources/features/multiloopTag.feature)
 
 - **Background Tag**
 
