@@ -3,7 +3,7 @@ Feature: Feature used in testing multiloop tag aspect
   Scenario: wipe 1 test file.
     Given I run 'rm -f testMultiloopOutput1.txt' locally
 
-  @multiloop(AGENT1_LIST=>AGENT1_NAME)
+  @multiloop(AGENT_LIST=>AGENT1_NAME)
   Scenario: write <AGENT1_NAME> a file the final result of the scenario.
     Given I run 'echo "<AGENT1_NAME>" >> testMultiloopOutput1.txt' locally
 
@@ -14,7 +14,7 @@ Feature: Feature used in testing multiloop tag aspect
   Scenario: wipe 2 test file.
     Given I run 'rm -f testMultiloopOutput2.txt' locally
 
-  @multiloop(AGENT1_LIST=>AGENT1_NAME,AGENT2_LIST=>AGENT2_NAME)
+  @multiloop(AGENT_LIST=>AGENT1_NAME,AGENT_LIST=>AGENT2_NAME)
   Scenario: write <AGENT1_NAME>,<AGENT2_NAME> a file the final result of the scenario.
     Given I run 'echo "<AGENT1_NAME>,<AGENT2_NAME>" >> testMultiloopOutput2.txt' locally
 
@@ -25,7 +25,7 @@ Feature: Feature used in testing multiloop tag aspect
   Scenario: wipe 3 test file.
       Given I run 'rm -f testMultiloopOutput3.txt' locally
 
-  @multiloop(AGENT1_LIST=>AGENT1_NAME,AGENT2_LIST=>AGENT2_NAME,AGENT3_LIST=>AGENT3_NAME)
+  @multiloop(AGENT_LIST=>AGENT1_NAME,AGENT_LIST=>AGENT2_NAME,AGENT_LIST=>AGENT3_NAME)
   Scenario: write <AGENT1_NAME>,<AGENT2_NAME>,<AGENT3_NAME> a file the final result of the scenario.
     Given I run 'echo "<AGENT1_NAME>,<AGENT2_NAME>,<AGENT3_NAME>" >> testMultiloopOutput3.txt' locally
 
@@ -37,11 +37,11 @@ Feature: Feature used in testing multiloop tag aspect
 #  Scenario: This is an omitted scenario so it contains a failing assert
 #    Given I run '[ "SHOULDNT_RUN" = "FAIL OTHERWISE" ]' locally
 
-  @skipOnEnv(AGENT1_LIST)
+  @skipOnEnv(AGENT_LIST)
   Scenario: This scenario should be omitted.
     Given I run '[ "!{VAR_NOT_DEFINED}" = "{"a":{}}" ]' locally
 
-  @runOnEnv(AGENT1_LIST)
+  @runOnEnv(AGENT_LIST)
   Scenario: This scenario should be executed.
     Given I run '[ "SHOULD_RUN" = "SHOULD_RUN" ]' locally
 
