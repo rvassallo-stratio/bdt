@@ -1,37 +1,49 @@
 Feature: Feature used in testing multiloop tag aspect
 
-  Scenario: wipe 1 test file.
+  Scenario: wipe test file 1.
     Given I run 'rm -f testMultiloopOutput1.txt' locally
 
   @multiloop(AGENT_LIST=>AGENT1_NAME)
-  Scenario: write <AGENT1_NAME> a file the final result of the scenario.
+  Scenario: write <AGENT1_NAME> a file 1 with the final result of the scenario.
     Given I run 'echo "<AGENT1_NAME>" >> testMultiloopOutput1.txt' locally
 
-  Scenario: verify 1 file content.
+  Scenario: verify file 1 content size.
     Given I run 'wc -l testMultiloopOutput1.txt' locally
     Then the command output contains '2'
 
-  Scenario: wipe 2 test file.
+  Scenario: verify file 1 content.
+    Given I run "cat testMultiloopOutput1.txt | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g'" locally
+    Then the command output contains '1\n2'
+
+  Scenario: wipe test file 2.
     Given I run 'rm -f testMultiloopOutput2.txt' locally
 
   @multiloop(AGENT_LIST=>AGENT1_NAME,AGENT_LIST=>AGENT2_NAME)
-  Scenario: write <AGENT1_NAME>,<AGENT2_NAME> a file the final result of the scenario.
+  Scenario: write <AGENT1_NAME>,<AGENT2_NAME> a file 2 with the final result of the scenario.
     Given I run 'echo "<AGENT1_NAME>,<AGENT2_NAME>" >> testMultiloopOutput2.txt' locally
 
-  Scenario: verify 2 file content.
+  Scenario: verify file 2 content size.
     Given I run 'wc -l testMultiloopOutput2.txt' locally
     Then the command output contains '4'
 
-  Scenario: wipe 3 test file.
+  Scenario: verify file 2 content.
+    Given I run "cat testMultiloopOutput2.txt | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g'" locally
+    Then the command output contains '1,1\n2,1\n1,2\n2,2'
+
+  Scenario: wipe test file 3.
       Given I run 'rm -f testMultiloopOutput3.txt' locally
 
   @multiloop(AGENT_LIST=>AGENT1_NAME,AGENT_LIST=>AGENT2_NAME,AGENT_LIST=>AGENT3_NAME)
-  Scenario: write <AGENT1_NAME>,<AGENT2_NAME>,<AGENT3_NAME> a file the final result of the scenario.
+  Scenario: write <AGENT1_NAME>,<AGENT2_NAME>,<AGENT3_NAME> a file 3 with the final result of the scenario.
     Given I run 'echo "<AGENT1_NAME>,<AGENT2_NAME>,<AGENT3_NAME>" >> testMultiloopOutput3.txt' locally
 
-  Scenario: verify 3 file content.
+  Scenario: verify file 3 content size.
     Given I run 'wc -l testMultiloopOutput3.txt' locally
     Then the command output contains '8'
+
+  Scenario: verify file 3 content.
+    Given I run "cat testMultiloopOutput3.txt | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g'" locally
+    Then the command output contains '1,1,1\n2,1,1\n1,2,1\n2,2,1\n1,1,2\n2,1,2\n1,2,2\n2,2,2'
 
 #  @multiloop(AGENT1_LIST=>AGENT1_NAME,AGENT2_LIST=>AGENT2_NAME)
 #  Scenario: This is an omitted scenario so it contains a failing assert
