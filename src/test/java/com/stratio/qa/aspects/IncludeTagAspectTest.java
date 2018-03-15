@@ -20,7 +20,9 @@ import com.stratio.qa.exceptions.IncludeException;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
@@ -67,5 +69,76 @@ public class IncludeTagAspectTest {
         lines.add("@include(testCheckParams)");
 
         assertThatExceptionOfType(Exception.class).isThrownBy(() -> inctag.parseLines(lines, path));
+    }
+
+    @Test
+    public void testExampleLoopLines() {
+        String name = "TEST_NAME";
+        String[] params = new String[]{"value1", "value2", "value3", "value4", "value5"};
+        List<String> lines = new ArrayList<>();
+        String[] expectedLines = new String[] {
+            "| TEST_NAME | TEST_NAME.id |",
+            "| value1 | 0 |",
+            "| value2 | 1 |",
+            "| value3 | 2 |",
+            "| value4 | 3 |",
+            "| value5 | 4 |"
+        };
+        inctag.exampleLoopLines(name, params, lines, 0);
+        assertThat(lines).as("Test that @loop lines are created properly").containsExactly(expectedLines);
+    }
+
+    @Test
+    public void testExampleMultiLoopLinesForSingleList() {
+        Map<String, String[]> params = new HashMap<>();
+        params.put("VAR_NAME1", new String[]{"10", "11", "12"});
+        List<String> lines = new ArrayList<>();
+        String[] expectedLines = new String[] {
+                "| VAR_NAME1 |",
+                "| 10 |",
+                "| 11 |",
+                "| 12 |"
+        };
+        inctag.exampleMultiloopLines(params, lines, 0);
+        assertThat(lines).as("Test that @multiloop lines are created properly for a single list").containsExactly(expectedLines);
+    }
+
+    @Test
+    public void testExampleMultiLoopLines() {
+        Map<String, String[]> params = new HashMap<>();
+        params.put("VAR_NAME1", new String[]{"10", "11", "12"});
+        params.put("VAR_NAME2", new String[]{"20", "21"});
+        params.put("VAR_NAME3", new String[]{"30"});
+        params.put("VAR_NAME4", new String[]{"40", "41", "42", "43"});
+        List<String> lines = new ArrayList<>();
+        String[] expectedLines = new String[] {
+                "| VAR_NAME1 | VAR_NAME2 | VAR_NAME3 | VAR_NAME4 |",
+                "| 10 | 20 | 30 | 40 |",
+                "| 10 | 20 | 30 | 41 |",
+                "| 10 | 20 | 30 | 42 |",
+                "| 10 | 20 | 30 | 43 |",
+                "| 10 | 21 | 30 | 40 |",
+                "| 10 | 21 | 30 | 41 |",
+                "| 10 | 21 | 30 | 42 |",
+                "| 10 | 21 | 30 | 43 |",
+                "| 11 | 20 | 30 | 40 |",
+                "| 11 | 20 | 30 | 41 |",
+                "| 11 | 20 | 30 | 42 |",
+                "| 11 | 20 | 30 | 43 |",
+                "| 11 | 21 | 30 | 40 |",
+                "| 11 | 21 | 30 | 41 |",
+                "| 11 | 21 | 30 | 42 |",
+                "| 11 | 21 | 30 | 43 |",
+                "| 12 | 20 | 30 | 40 |",
+                "| 12 | 20 | 30 | 41 |",
+                "| 12 | 20 | 30 | 42 |",
+                "| 12 | 20 | 30 | 43 |",
+                "| 12 | 21 | 30 | 40 |",
+                "| 12 | 21 | 30 | 41 |",
+                "| 12 | 21 | 30 | 42 |",
+                "| 12 | 21 | 30 | 43 |"
+        };
+        inctag.exampleMultiloopLines(params, lines, 0);
+        assertThat(lines).as("Test that @multiloop lines are created properly for multiple lists").containsExactly(expectedLines);
     }
 }

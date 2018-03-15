@@ -191,7 +191,7 @@ public class LoopIncludeTagAspect {
         return numLines;
     }
 
-    public int[] fixMultiloopIndexes(int[] idxs, String[] keys, Map<String, String[]> params) {
+    private int[] fixMultiloopIndexes(int[] idxs, String[] keys, Map<String, String[]> params) {
         for (int i = idxs.length - 1; i >= 0; i--) {
             if (idxs[i] >= params.get(keys[i]).length) {
                 if (i > 0) {
